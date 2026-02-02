@@ -26,12 +26,10 @@
       place-items: center;
       background: radial-gradient(circle at top, var(--bg2), var(--bg1));
       font-family: system-ui, sans-serif;
+      overflow: auto;
       padding: 16px;
-      overflow-x: hidden;
-      overflow-y: auto;
     }
 
-    /* CONFETTI CANVAS */
     #confettiCanvas {
       position: fixed;
       inset: 0;
@@ -45,6 +43,7 @@
       width: min(720px, 92vw);
       padding: 26px 22px;
       background: var(--card);
+      backdrop-filter: blur(10px);
       border-radius: 22px;
       text-align: center;
       box-shadow: 0 18px 60px rgba(0,0,0,.15);
@@ -54,6 +53,7 @@
       width: min(260px, 80vw);
       margin: 0 auto 10px;
       display: block;
+      filter: drop-shadow(0 10px 14px rgba(0,0,0,.12));
     }
 
     h1 {
@@ -81,6 +81,7 @@
       cursor: pointer;
       box-shadow: 0 10px 24px rgba(0,0,0,.14);
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
       transition: transform .12s ease, background .12s ease;
     }
 
@@ -89,10 +90,7 @@
       background: var(--yes);
       color: #fff;
     }
-
-    #yesBtn:hover {
-      background: var(--yesHover);
-    }
+    #yesBtn:hover { background: var(--yesHover); }
 
     #noBtn {
       left: 62%;
@@ -134,8 +132,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-
-    <!-- SIAMESE CAT -->
+    <!-- SIAMESE CAT SVG -->
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="fur" x1="0" x2="1">
@@ -143,54 +140,52 @@
           <stop offset="1" stop-color="#f1ddb6"/>
         </linearGradient>
 
-        <linearGradient id="siameseDark" x1="0" x2="1">
-          <stop offset="0" stop-color="#5a3b2e"/>
-          <stop offset="1" stop-color="#3e261c"/>
-        </linearGradient>
-
-        <linearGradient id="heart" x1="0" x2="1">
-          <stop offset="0" stop-color="#f1b6c4"/>
-          <stop offset="1" stop-color="#ec9aad"/>
+        <linearGradient id="siameseBrown" x1="0" x2="1">
+          <stop offset="0" stop-color="#5c3d2e"/>
+          <stop offset="1" stop-color="#452b1f"/>
         </linearGradient>
       </defs>
 
-      <!-- HEART -->
-      <path d="M250 50 C250 33 270 25 282 38
-               C294 25 314 33 314 50
-               C314 78 282 92 282 106
-               C282 92 250 78 250 50Z"
-            fill="url(#heart)"/>
-
-      <!-- BODY / HEAD -->
-      <path d="M90 120 C90 70 140 40 190 60
-               C240 40 290 70 290 120
-               C290 180 240 210 190 210
-               C140 210 90 180 90 120Z"
-            fill="url(#fur)"/>
-
-      <!-- CENTER FOREHEAD FUR BLOB -->
+      <!-- HEAD / BODY -->
       <path
-        d="M145 98
-           C150 78 190 78 195 98
-           C205 120 190 138 170 140
-           C150 138 135 120 145 98Z"
+        d="M90 120
+           C90 70 140 40 190 60
+           C240 40 290 70 290 120
+           C290 180 240 210 190 210
+           C140 210 90 180 90 120Z"
         fill="url(#fur)"
       />
 
+      <!-- SIAMESE FACE MASK (CENTERED & SYMMETRICAL) -->
+      <path
+        d="
+          M190 90
+          C160 90 135 115 135 145
+          C135 175 160 185 190 185
+          C220 185 245 175 245 145
+          C245 115 220 90 190 90
+          Z
+        "
+        fill="url(#siameseBrown)"
+      />
+
       <!-- EARS -->
-      <path d="M110 92 L95 55 L140 78 Z" fill="url(#siameseDark)"/>
-      <path d="M270 92 L285 55 L240 78 Z" fill="url(#siameseDark)"/>
+      <path d="M110 92 L95 55 L140 78 Z" fill="url(#siameseBrown)"/>
+      <path d="M270 92 L285 55 L240 78 Z" fill="url(#siameseBrown)"/>
 
       <!-- EYES -->
       <circle cx="160" cy="130" r="8"/>
       <circle cx="220" cy="130" r="8"/>
 
       <!-- NOSE -->
-      <path d="M190 144 C186 144 182 148 182 152
-               C182 160 190 164 190 170
-               C190 164 198 160 198 152
-               C198 148 194 144 190 144Z"
-            fill="#1b1509"/>
+      <path
+        d="M190 144
+           C186 144 182 148 182 152
+           C182 160 190 164 190 170
+           C190 164 198 160 198 152
+           C198 148 194 144 190 144Z"
+        fill="#1b1509"
+      />
     </svg>
 
     <h1>will you be my valentine?</h1>
@@ -200,6 +195,7 @@
       <button id="noBtn">No</button>
     </section>
 
+    <!-- HINT -->
     <div class="hint" id="hint"></div>
 
     <section class="result" id="result">
@@ -219,18 +215,20 @@
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
 
+    /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
 
     function resizeConfettiCanvas() {
       const dpr = Math.max(1, window.devicePixelRatio || 1);
-      confettiCanvas.width = window.innerWidth * dpr;
-      confettiCanvas.height = window.innerHeight * dpr;
+      confettiCanvas.width = Math.floor(window.innerWidth * dpr);
+      confettiCanvas.height = Math.floor(window.innerHeight * dpr);
       confettiCanvas.style.width = "100vw";
       confettiCanvas.style.height = "100vh";
     }
 
     resizeConfettiCanvas();
     window.addEventListener("resize", resizeConfettiCanvas);
+    window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
 
     const confettiInstance = confetti.create(confettiCanvas, {
       resize: false,
@@ -262,12 +260,14 @@
       }, 300);
     }
 
+    /* ---------- YES BUTTON GROWS ---------- */
     let yesScale = 1;
     function growYes() {
       yesScale = Math.min(2.2, yesScale + 0.1);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
 
+    /* ---------- NO BUTTON RUNS AWAY ---------- */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
@@ -283,10 +283,10 @@
       dy /= mag;
 
       let newLeft = (b.left - z.left) + dx * 150;
-      let newTop = (b.top - z.top) + dy * 150;
+      let newTop  = (b.top - z.top) + dy * 150;
 
       newLeft = clamp(newLeft, 0, z.width - b.width);
-      newTop = clamp(newTop, 0, z.height - b.height);
+      newTop  = clamp(newTop, 0, z.height - b.height);
 
       noBtn.style.left = newLeft + "px";
       noBtn.style.top = newTop + "px";
@@ -306,6 +306,7 @@
 
     noBtn.addEventListener("click", e => e.preventDefault());
 
+    /* ---------- YES CLICK ---------- */
     yesBtn.addEventListener("click", () => {
       zone.style.display = "none";
       hint.style.display = "none";
@@ -316,4 +317,3 @@
   </script>
 </body>
 </html>
-
