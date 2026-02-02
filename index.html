@@ -131,6 +131,9 @@
 <body>
   <canvas id="confettiCanvas"></canvas>
 
+  <!-- Background Music -->
+  <audio id="bgMusic" src="kingston" loop></audio>
+
   <main class="card">
     <!-- Siamese cat SVG with heart -->
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
@@ -139,67 +142,24 @@
           <stop offset="0" stop-color="#fae8c4"/>
           <stop offset="1" stop-color="#f1ddb6"/>
         </linearGradient>
-
         <linearGradient id="siameseBrown" x1="0" x2="1">
           <stop offset="0" stop-color="#5c3d2e"/>
           <stop offset="1" stop-color="#452b1f"/>
         </linearGradient>
-
-        <!-- Heart gradient -->
         <linearGradient id="heart" x1="0" x2="1">
           <stop offset="0" stop-color="#f1b6c4"/>
           <stop offset="1" stop-color="#ec9aad"/>
         </linearGradient>
       </defs>
 
-      <!-- Heart position -->
-      <path d="M250 50 
-               C250 33 270 25 282 38
-               C294 25 314 33 314 50
-               C314 78 282 92 282 106
-               C282 92 250 78 250 50Z"
-            fill="url(#heart)"/>
-
-      <!-- Head / Body -->
-      <path
-        d="M90 120
-           C90 70 140 40 190 60
-           C240 40 290 70 290 120
-           C290 180 240 210 190 210
-           C140 210 90 180 90 120Z"
-        fill="url(#fur)"
-      />
-
-      <!-- Siamese face mask -->
-      <path
-        d="
-          M190 90
-          C160 90 135 115 135 145
-          C135 175 160 185 190 185
-          C220 185 245 175 245 145
-          C245 115 220 90 190 90
-          Z
-        "
-        fill="url(#siameseBrown)"
-      />
-
-      <!-- Ears -->
+      <path d="M250 50 C250 33 270 25 282 38 C294 25 314 33 314 50 C314 78 282 92 282 106 C282 92 250 78 250 50Z" fill="url(#heart)"/>
+      <path d="M90 120 C90 70 140 40 190 60 C240 40 290 70 290 120 C290 180 240 210 190 210 C140 210 90 180 90 120Z" fill="url(#fur)"/>
+      <path d="M190 90 C160 90 135 115 135 145 C135 175 160 185 190 185 C220 185 245 175 245 145 C245 115 220 90 190 90 Z" fill="url(#siameseBrown)"/>
       <path d="M110 92 L95 55 L140 78 Z" fill="url(#siameseBrown)"/>
       <path d="M270 92 L285 55 L240 78 Z" fill="url(#siameseBrown)"/>
-
-      <!-- Eyes -->
       <circle cx="160" cy="130" r="8"/>
       <circle cx="220" cy="130" r="8"/>
-
-      <!-- Nose -->
-      <path
-        d="M190 144
-           C186 144 182 148 182 152
-           C182 160 190 164 190 170
-           C190 164 198 160 198 152
-           C198 148 194 144 190 144Z"
-        fill="#1b1509"
-      />
+      <path d="M190 144 C186 144 182 148 182 152 C182 160 190 164 190 170 C190 164 198 160 198 152 C198 148 194 144 190 144Z" fill="#1b1509"/>
     </svg>
 
     <h1>will you be my valentine?</h1>
@@ -213,11 +173,7 @@
 
     <section class="result" id="result">
       <h2>YAYYY!!!</h2>
-      <img
-        class="fireworks"
-        src="https://files.catbox.moe/ankszl.gif"
-        alt="Fireworks"
-      />
+      <img class="fireworks" src="https://files.catbox.moe/ankszl.gif" alt="Fireworks"/>
     </section>
   </main>
 
@@ -227,6 +183,7 @@
     const noBtn = document.getElementById("noBtn");
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
+    const bgMusic = document.getElementById("bgMusic");
 
     const confettiCanvas = document.getElementById("confettiCanvas");
 
@@ -313,8 +270,12 @@
       result.style.display = "block";
       resizeConfettiCanvas();
       fullScreenConfetti();
+
+      // Play background music when user clicks "Yes"
+      bgMusic.play().catch(() => {
+        console.log("Autoplay blocked, user interaction required.");
+      });
     });
   </script>
 </body>
 </html>
-
