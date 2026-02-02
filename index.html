@@ -125,6 +125,16 @@
       from { transform: scale(.96); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
+
+    /* Heart pulse animation */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    .heart {
+      animation: pulse 1s infinite ease-in-out;
+    }
   </style>
 </head>
 
@@ -132,7 +142,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- SIAMESE CAT SVG -->
+    <!-- SIAMESE CAT SVG WITH PULSING HEART -->
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="fur" x1="0" x2="1">
@@ -145,11 +155,20 @@
           <stop offset="1" stop-color="#452b1f"/>
         </linearGradient>
 
-        <linearGradient id="heart" x1="0" x2="1">
+        <linearGradient id="heartGradient" x1="0" x2="1">
           <stop offset="0" stop-color="#f1b6c4"/>
           <stop offset="1" stop-color="#ec9aad"/>
         </linearGradient>
       </defs>
+
+      <!-- HEART BEHIND CAT -->
+      <path class="heart"
+            d="M250 50
+               C250 33 270 25 282 38
+               C294 25 314 33 314 50
+               C314 78 282 92 282 106
+               C282 92 250 78 250 50Z"
+            fill="url(#heartGradient)"/>
 
       <!-- HEAD / BODY -->
       <path
@@ -160,14 +179,6 @@
            C140 210 90 180 90 120Z"
         fill="url(#fur)"
       />
-
-      <!-- HEART ON TOP -->
-      <path d="M250 50
-               C250 33 270 25 282 38
-               C294 25 314 33 314 50
-               C314 78 282 92 282 106
-               C282 92 250 78 250 50Z"
-            fill="url(#heart)"/>
 
       <!-- SIAMESE FACE MASK -->
       <path
@@ -208,7 +219,6 @@
       <button id="noBtn">No</button>
     </section>
 
-    <!-- HINT -->
     <div class="hint" id="hint"></div>
 
     <section class="result" id="result">
@@ -228,7 +238,6 @@
     const result = document.getElementById("result");
     const hint = document.getElementById("hint");
 
-    /* ---------- CONFETTI ---------- */
     const confettiCanvas = document.getElementById("confettiCanvas");
 
     function resizeConfettiCanvas() {
@@ -243,14 +252,10 @@
     window.addEventListener("resize", resizeConfettiCanvas);
     window.addEventListener("orientationchange", () => setTimeout(resizeConfettiCanvas, 150));
 
-    const confettiInstance = confetti.create(confettiCanvas, {
-      resize: false,
-      useWorker: true
-    });
+    const confettiInstance = confetti.create(confettiCanvas, { resize: false, useWorker: true });
 
     function fullScreenConfetti() {
       const end = Date.now() + 1600;
-
       (function frame() {
         confettiInstance({
           particleCount: 12,
@@ -273,14 +278,12 @@
       }, 300);
     }
 
-    /* ---------- YES BUTTON GROWS ---------- */
     let yesScale = 1;
     function growYes() {
       yesScale = Math.min(2.2, yesScale + 0.1);
       yesBtn.style.transform = `translateY(-50%) scale(${yesScale})`;
     }
 
-    /* ---------- NO BUTTON RUNS AWAY ---------- */
     function clamp(n, min, max) {
       return Math.max(min, Math.min(max, n));
     }
@@ -288,23 +291,18 @@
     function moveNo(px, py) {
       const z = zone.getBoundingClientRect();
       const b = noBtn.getBoundingClientRect();
-
       let dx = (b.left + b.width / 2) - px;
       let dy = (b.top + b.height / 2) - py;
       let mag = Math.hypot(dx, dy) || 1;
       dx /= mag;
       dy /= mag;
-
       let newLeft = (b.left - z.left) + dx * 150;
       let newTop  = (b.top - z.top) + dy * 150;
-
       newLeft = clamp(newLeft, 0, z.width - b.width);
       newTop  = clamp(newTop, 0, z.height - b.height);
-
       noBtn.style.left = newLeft + "px";
       noBtn.style.top = newTop + "px";
       noBtn.style.transform = "none";
-
       growYes();
     }
 
@@ -319,7 +317,6 @@
 
     noBtn.addEventListener("click", e => e.preventDefault());
 
-    /* ---------- YES CLICK ---------- */
     yesBtn.addEventListener("click", () => {
       zone.style.display = "none";
       hint.style.display = "none";
