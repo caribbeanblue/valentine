@@ -126,14 +126,17 @@
       to { transform: scale(1); opacity: 1; }
     }
 
-    /* Heart pulse animation */
-    @keyframes pulse {
+    /* Heart "heartbeat" animation */
+    @keyframes heartbeat {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.15); }
+      25% { transform: scale(1.12); }
+      50% { transform: scale(1.18); }
+      75% { transform: scale(1.12); }
     }
 
     .heart {
-      animation: pulse 1s infinite ease-in-out;
+      animation: heartbeat 1.2s infinite ease-in-out;
+      transform-origin: center;
     }
   </style>
 </head>
@@ -142,7 +145,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- SIAMESE CAT SVG WITH PULSING HEART -->
+    <!-- SIAMESE CAT SVG WITH HEART -->
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="fur" x1="0" x2="1">
