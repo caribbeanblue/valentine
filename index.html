@@ -132,7 +132,7 @@
   <canvas id="confettiCanvas"></canvas>
 
   <main class="card">
-    <!-- SIAMESE CAT SVG WITH HEART BEHIND BEIGE FACE -->
+    <!-- SIAMESE CAT SVG WITH NEW HEART -->
     <svg class="art" viewBox="0 0 320 240" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <linearGradient id="fur" x1="0" x2="1">
@@ -145,21 +145,20 @@
           <stop offset="1" stop-color="#452b1f"/>
         </linearGradient>
 
-        <linearGradient id="heartGradient" x1="0" x2="1">
+        <!-- Updated heart gradient -->
+        <linearGradient id="heart" x1="0" x2="1">
           <stop offset="0" stop-color="#f1b6c4"/>
           <stop offset="1" stop-color="#ec9aad"/>
         </linearGradient>
       </defs>
 
-      <!-- HEART BEHIND CAT'S BEIGE FACE -->
-      <path
-        d="M180 80
-           C160 55 200 55 220 80
-           C240 105 200 140 180 160
-           C160 140 120 105 140 80
-           C160 55 200 55 180 80Z"
-        fill="url(#heartGradient)"
-      />
+      <!-- NEW HEART POSITION -->
+      <path d="M250 50 
+               C250 33 270 25 282 38
+               C294 25 314 33 314 50
+               C314 78 282 92 282 106
+               C282 92 250 78 250 50Z"
+            fill="url(#heart)"/>
 
       <!-- HEAD / BODY -->
       <path
@@ -318,4 +317,3 @@
   </script>
 </body>
 </html>
-
