@@ -144,6 +144,11 @@
           <stop offset="0" stop-color="#5c3d2e"/>
           <stop offset="1" stop-color="#452b1f"/>
         </linearGradient>
+
+        <linearGradient id="heart" x1="0" x2="1">
+          <stop offset="0" stop-color="#f1b6c4"/>
+          <stop offset="1" stop-color="#ec9aad"/>
+        </linearGradient>
       </defs>
 
       <!-- HEAD / BODY -->
@@ -156,7 +161,15 @@
         fill="url(#fur)"
       />
 
-      <!-- SIAMESE FACE MASK (CENTERED & SYMMETRICAL) -->
+      <!-- HEART ON TOP -->
+      <path d="M250 50
+               C250 33 270 25 282 38
+               C294 25 314 33 314 50
+               C314 78 282 92 282 106
+               C282 92 250 78 250 50Z"
+            fill="url(#heart)"/>
+
+      <!-- SIAMESE FACE MASK -->
       <path
         d="
           M190 90
